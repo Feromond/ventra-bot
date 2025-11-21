@@ -1,16 +1,24 @@
-init:
-	\
-	python3 -m venv discordbotcourse; \
-	source discordbotcourse/bin/activate; \
-    pip install --upgrade pip; \
-    pip install -r requirements.txt; \
+PYTHON ?= python3
+VENV_DIR ?= discordbotcourse
+VENV_BIN := $(VENV_DIR)/bin
+ACTIVATE := . $(VENV_BIN)/activate
 
-# build_local:
-# 	echo "Building Local Library"
-# 	pip3 install -e .
-# build:
-# 	echo "Building Distribution Of Library"
-# 	python3 setup.py bdist_wheel
-# destroy:
-# 	echo "Uninstalling Local Build Of Library"
-# 	pip3 uninstall hypixel-api-lib
+.PHONY: init venv install run clean freeze
+
+venv:
+	$(PYTHON) -m venv $(VENV_DIR)
+
+install: venv
+	$(ACTIVATE) && pip install --upgrade pip && pip install -r requirements.txt
+
+init: install
+
+run:
+	$(ACTIVATE) && python bot.py
+
+freeze:
+	$(ACTIVATE) && pip freeze > requirements.txt
+
+clean:
+	rm -rf $(VENV_DIR)
+	find . -name "__pycache__" -prune -exec rm -rf {} +
