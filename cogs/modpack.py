@@ -79,7 +79,6 @@ class Modpack(commands.Cog):
             if not channel:
                 continue
 
-            # Check for existing status message
             status_msg = None
             async for msg in channel.history(limit=20):
                 if msg.author == self.bot.user and msg.embeds and msg.embeds[0].title == "Ventra Modpack Status":
@@ -111,7 +110,6 @@ class Modpack(commands.Cog):
                                 except discord.HTTPException:
                                     pass
 
-                    # Notify role
                     role = discord.utils.get(guild.roles, name=ROLE_NAME)
                     if role:
                         await channel.send(f"{role.mention} **New Update Available:** {version_number} - {version_name}")
