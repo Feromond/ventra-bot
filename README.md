@@ -7,6 +7,8 @@ Ventra Bot is a Discord bot built with `discord.py` that bundles general utility
 - **General utilities** – `/help`, `/ping`, `/invite`, `/server` for quick server introspection.
 - **Community helpers** – `/poll`, `/userinfo`, and the `/advancedpoll` slash command for multi-option emoji polls.
 - **Minecraft integration** – `/status` and `/player-list` commands powered by `mcstatus`, plus an automated loop that posts live stats for `ventra.dev`.
+- **Math tools** – `/calculate` for evaluating mathematical expressions.
+- **Modpack updates** – Automated tracking of `ventra-modpack` on Modrinth with role-based notifications.
 
 ## Requirements
 
@@ -69,7 +71,10 @@ All targets rely on `python3` by default; override with `make PYTHON=python3.12 
 
 - `general` cog: `/help`, `/ping`, `/invite`, `/server`
 - `utility` cog: `/poll`, `/userinfo`, `/advancedpoll`
+- `calculator` cog: `/calculate <expression> [precision]`
 - `minecraft` cog: `/status <ip>`, `/player-list <ip>` plus the background status loop (runs every minute and edits the bot's most recent message in matching channels).
+- `modpack` cog: Automated update checks for `ventra-modpack` (posts to `#modpack` with a subscription button).
+- `template` cog: `/test`, `/simple`, `/complex`, `/restricted` (Development/Template examples).
 - Owner-only commands defined in `bot.py`: `sync`, `clearsync`
 
 Hybrid commands can be invoked with the prefix from `config.json` or via slash commands once synced.
