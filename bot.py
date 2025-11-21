@@ -86,7 +86,11 @@ class DiscordBot(commands.Bot):
         full_command_name = context.command.qualified_name
         split = full_command_name.split(" ")
         executed_command = str(split[0])
-        print(f"Executed {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})")
+        if context.guild:
+            location = f"{context.guild.name} (ID: {context.guild.id})"
+        else:
+            location = "Direct Message"
+        print(f"Executed {executed_command} command in {location} by {context.author} (ID: {context.author.id})")
 
     async def on_command_error(self, context: Context, error) -> None:
         """
@@ -107,7 +111,11 @@ class DiscordBot(commands.Bot):
                 color=0xE02B2B
             )
             await context.send(embed=embed)
-            print(f"{context.author} (ID: {context.author.id}) tried to execute an owner only command in the guild {context.guild.name} (ID: {context.guild.id}), but the user is not an owner of the bot.")
+            if context.guild:
+                guild_info = f"{context.guild.name} (ID: {context.guild.id})"
+            else:
+                guild_info = "Direct Message"
+            print(f"{context.author} (ID: {context.author.id}) tried to execute an owner only command in {guild_info}, but the user is not an owner of the bot.")
         elif isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(
                 description="You are missing the permission(s) `" + ", ".join(error.missing_permissions) + "` to execute this command!",
@@ -117,6 +125,12 @@ class DiscordBot(commands.Bot):
         elif isinstance(error, commands.BotMissingPermissions):
             embed = discord.Embed(
                 description="I am missing the permission(s) `" + ", ".join(error.missing_permissions) + "` to fully perform this command!",
+                color=0xE02B2B
+            )
+            await context.send(embed=embed)
+        elif isinstance(error, commands.NoPrivateMessage):
+            embed = discord.Embed(
+                description="This command can only be used inside a server.",
                 color=0xE02B2B
             )
             await context.send(embed=embed)
@@ -136,6 +150,7 @@ if __name__ == "__main__":
     
     @bot.command()
     @commands.is_owner()
+    @commands.guild_only()
     async def sync(ctx):
         """Syncs slash commands globally. Use carefully."""
         bot.tree.copy_global_to(guild=ctx.guild)
@@ -144,6 +159,7 @@ if __name__ == "__main__":
         
     @bot.command()
     @commands.is_owner()
+    @commands.guild_only()
     async def clearsync(ctx):
         bot.tree.clear_commands(guild=ctx.guild)
         await bot.tree.sync(guild=ctx.guild)

@@ -1,5 +1,6 @@
 import discord
 import random
+from discord import app_commands
 from discord.ext import commands
 
 class General(commands.Cog, name="General"):
@@ -63,6 +64,8 @@ class General(commands.Cog, name="General"):
         except discord.Forbidden:
             await context.send(embed=embed)
 
+    @commands.guild_only()
+    @app_commands.guild_only()
     @commands.hybrid_command(name="server", description="Get information about the server.")
     async def server(self, context: commands.Context):
         """

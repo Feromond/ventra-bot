@@ -23,6 +23,8 @@ class Utility(commands.Cog, name="Utility"):
         await message.add_reaction("👍")
         await message.add_reaction("👎")
 
+    @commands.guild_only()
+    @app_commands.guild_only()
     @commands.hybrid_command(name="userinfo", description="Get information about a user.")
     @app_commands.describe(user="The user to get info about")
     async def userinfo(self, context: commands.Context, user: discord.Member = None):
