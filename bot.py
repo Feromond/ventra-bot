@@ -134,20 +134,14 @@ class DiscordBot(commands.Bot):
 if __name__ == "__main__":
     bot = DiscordBot()
     
-    # Add a sync command to register slash commands
     @bot.command()
     @commands.is_owner()
     async def sync(ctx):
         """Syncs slash commands globally. Use carefully."""
-        # Sync to the current guild (immediate update for testing)
         bot.tree.copy_global_to(guild=ctx.guild)
         synced = await bot.tree.sync(guild=ctx.guild)
         await ctx.send(f"Synced {len(synced)} command(s) to this guild immediately!")
         
-        # Sync globally (takes up to an hour)
-        # await bot.tree.sync() 
-
-    # Helper to clear commands if things get stuck
     @bot.command()
     @commands.is_owner()
     async def clearsync(ctx):
