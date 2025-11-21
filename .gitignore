@@ -1,3 +1,4 @@
 .env
 discordbotcourse
 .DS_Store
+*.pyc
