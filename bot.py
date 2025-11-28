@@ -150,20 +150,36 @@ if __name__ == "__main__":
     
     @bot.command()
     @commands.is_owner()
-    @commands.guild_only()
-    async def sync(ctx):
-        """Syncs slash commands globally. Use carefully."""
+    async def sync(ctx, scope: str = None):
+        """
+        Syncs slash commands.
+        Usage:
+        !sync        -> Syncs global commands to the current guild (Instant)
+        !sync global -> Syncs global commands globally (Up to 1 hour)
+        !sync clear  -> Clears commands in the current guild
+        """
+        if scope == "global":
+            synced = await bot.tree.sync()
+            await ctx.send(f"Synced {len(synced)} slash commands globally. This may take up to an hour to propagate.")
+            return
+
+        if scope == "clear":
+            if not ctx.guild:
+                await ctx.send("This command can only be used in a server.")
+                return
+            bot.tree.clear_commands(guild=ctx.guild)
+            await bot.tree.sync(guild=ctx.guild)
+            await ctx.send("Cleared guild commands.")
+            return
+
+        # Default: Sync to current guild
+        if not ctx.guild:
+            await ctx.send("This command can only be used in a server (or use '!sync global').")
+            return
+            
         bot.tree.copy_global_to(guild=ctx.guild)
         synced = await bot.tree.sync(guild=ctx.guild)
         await ctx.send(f"Synced {len(synced)} command(s) to this guild immediately!")
-        
-    @bot.command()
-    @commands.is_owner()
-    @commands.guild_only()
-    async def clearsync(ctx):
-        bot.tree.clear_commands(guild=ctx.guild)
-        await bot.tree.sync(guild=ctx.guild)
-        await ctx.send("Cleared guild commands.")
 
     token = os.getenv("DISCORD_TOKEN")
     if not token:
