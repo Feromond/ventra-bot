@@ -2,25 +2,25 @@
 Template cog for reference to help me remember how to nicely start a new one.
 """
 
-# import discord
-# from discord.ext import commands
-# from discord.ext.commands import Context
-# from typing import List
+import discord
+from discord.ext import commands
+from discord.ext.commands import Context
+from typing import List
 
-# class Template(commands.Cog, name="Template"):
-#     def __init__(self, bot) -> None:
-#         self.bot = bot
+class Template(commands.Cog, name="Template"):
+    def __init__(self, bot) -> None:
+        self.bot = bot
 
-#     # --- Simple Command ---
-#     @commands.hybrid_command(
-#         name="test",
-#         description="This is a testing command that does nothing."
-#     )
-#     async def test(self, context: Context) -> None:
-#         """
-#         This is a testing command that does nothing.
-#         """
-#         await context.send("Test command executed!")
+    # --- Simple Command ---
+    @commands.hybrid_command(
+        name="test",
+        description="This is a testing command that does nothing."
+    )
+    async def test(self, context: Context) -> None:
+        """
+        This is a testing command that does nothing.
+        """
+        await context.send("Test command executed!")
 
 #     @commands.hybrid_command(
 #         name="simple",
@@ -86,5 +86,5 @@ Template cog for reference to help me remember how to nicely start a new one.
 #         if isinstance(error, commands.MissingPermissions):
 #             await context.send("You do not have permission to use this command.", ephemeral=True)
 
-# async def setup(bot) -> None:
-#     await bot.add_cog(Template(bot))
+async def setup(bot) -> None:
+    await bot.add_cog(Template(bot))
